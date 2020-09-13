@@ -1,0 +1,16 @@
+function net = MyNeuralNet(data,label,wb)
+net = fitnet(4, 'traingd');
+net.initFcn = 'initlay';
+net.layers{1}.initFcn = 'initnw';
+net.layers{2}.initFcn = 'initnw';
+net.layers{1}.transferFcn = 'tansig';
+net.layers{2}.transferFcn = 'tansig';
+net.trainParam.lr = 0.01;
+net.trainParam.epochs = 5000;
+net.divideFcn = 'divideind';
+net.divideParam.trainInd = 1:2700;
+net.divideParam.valInd = 2701:3600;
+net.divideParam.testInd = 3601:4500;
+net = setwb(net,wb);
+%net = init(net);
+[net, ~] = train(net,data,label,'CheckpointFile','MyCheckpoint');
